@@ -1,8 +1,13 @@
 const express = require("express");
-const app = express();
 const dotenv = require("dotenv");
+const cors = require("cors");
 const databaseConnection = require("./configs/dataBaseConnection");
+const app = express();
+
+app.use(cors());
+
 dotenv.config();
+
 databaseConnection();
 
 app.get("/todo/api", function (req, res) {
