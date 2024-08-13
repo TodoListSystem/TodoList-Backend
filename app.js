@@ -11,7 +11,7 @@ dotenv.config();
 databaseConnection();
 
 app.get("/todo/api", function (req, res) {
-  res.status(200).json({ message: "todo list" });
+  res.status(200).json({ message: "todo list " });
 });
 
 PORT = process.env.PORT || 5000;
