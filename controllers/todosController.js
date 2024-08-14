@@ -2,7 +2,6 @@ const asyncHandler = require("express-async-handler");
 const joi = require("joi");
 const ModelTodos = require("../models/Todos");
 
-//validation layer
 const validateCreateTodo = (obj) => {
   const schema = joi.object({
     baslik: joi.string().required().min(3).max(255),
@@ -14,10 +13,15 @@ const validateCreateTodo = (obj) => {
 };
 const createTodo = asyncHandler(async function (req, res) {
   const { error } = validateCreateTodo(req.body);
+  let todo = await ModelTodos.findOne({ baslik: req.body.baslik });
+
   if (error) {
     return res.status(400).json({ msg: error.details[0].message });
   }
-  const todo = new ModelTodos({
+  if (todo) {
+    return res.status(400).json({ msg: "baslik unique olamsi gerekiyor" });
+  }
+  todo = new ModelTodos({
     baslik: req.body.baslik,
     icerik: req.body.icerik,
     note: req.body.note,
