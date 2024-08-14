@@ -5,18 +5,17 @@ const TodosSchema = mongoose.Schema(
     baslik: {
       type: String,
       required: true,
-      minlength: 3,
-      maxlength: 255,
+      unique: true,
     },
     icerik: {
       type: String,
-      minlength: 3,
       maxlength: 255,
+      default: "",
     },
     note: {
       type: String,
-      minlength: 3,
       maxlength: 255,
+      default: "",
     },
     yapildi: {
       type: Boolean,

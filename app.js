@@ -3,14 +3,14 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const databaseConnection = require("./configs/dataBaseConnection");
 const app = express();
-
-app.use(cors());
-
+const todos = require("./routes/todosRoutes");
 dotenv.config();
-
+app.use(cors());
+app.use(express.json());
 databaseConnection();
+app.use("/api/todolist", todos);
 
-app.get("/todo/api", function (req, res) {
+app.get("/api/todolist", function (req, res) {
   res.status(200).json({ message: "todo list " });
 });
 
