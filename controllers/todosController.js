@@ -35,7 +35,15 @@ const getTodos = asyncHandler(async function (req, res) {
   const todos = await ModelTodos.find();
   res.status(200).json(todos);
 });
+const getSpaceficTodos = asyncHandler(async function (req, res) {
+  const todo = await ModelTodos.findById(req.params.id);
+  if (!todo) {
+    res.status(404).json({ msg: "todo bulunamadi" });
+  }
+  res.status(200).json(todo);
+});
 module.exports = {
   createTodo,
   getTodos,
+  getSpaceficTodos,
 };
