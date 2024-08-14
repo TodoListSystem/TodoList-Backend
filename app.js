@@ -16,5 +16,5 @@ app.get("/api/todolist", function (req, res) {
 
 PORT = process.env.PORT || 5000;
 app.listen(PORT, function () {
-  console.log(`sever ${PORT} portuna baglandi`);
+  console.log(`server ${PORT} portuna baglandi`);
 });

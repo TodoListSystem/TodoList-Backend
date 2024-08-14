@@ -42,22 +42,26 @@ const createTodo = asyncHandler(async function (req, res) {
 
 const getTodos = asyncHandler(async function (req, res) {
   const todos = await ModelTodos.find();
-  res.status(200).json(todos);
+  return res.status(200).json(todos);
 });
 const getSpaceficTodos = asyncHandler(async function (req, res) {
   const todo = await ModelTodos.findById(req.params.id);
   if (!todo) {
-    res.status(404).json({ msg: "todo bulunamadi" });
+    return res.status(404).json({ msg: "todo bulunamadi" });
   }
-  res.status(200).json(todo);
+  return res.status(200).json(todo);
 });
 
 const upadateTodo = asyncHandler(async function (req, res) {
   const { error } = validateUpdatedTodo(req.body);
+  let todo = await ModelTodos.findById(req.params.id);
   if (error) {
-    res.status(400).json({ msg: error.details[0].message });
+    return res.status(400).json({ msg: error.details[0].message });
   }
-  const todo = await ModelTodos.findByIdAndUpdate(
+  if (!todo) {
+    return res.status(404).json({ msg: "todo bulunamadi" });
+  }
+  todo = await ModelTodos.findByIdAndUpdate(
     req.params.id,
     {
       $set: {
@@ -69,11 +73,20 @@ const upadateTodo = asyncHandler(async function (req, res) {
     },
     { new: true }
   );
-  res.status(200).json(todo);
+  return res.status(200).json(todo);
+});
+const deleteTodo = asyncHandler(async function (req, res) {
+  let todo = await ModelTodos.findById(req.params.id);
+  if (!todo) {
+    return res.status(404).json({ msg: "todo bulunamadi" });
+  }
+  todo = await ModelTodos.findByIdAndDelete(req.params.id);
+  return res.status(200).json({ msg: "todo silindi", deleteTodo: todo });
 });
 module.exports = {
   createTodo,
   getTodos,
   getSpaceficTodos,
   upadateTodo,
+  deleteTodo,
 };
