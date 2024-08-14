@@ -11,6 +11,15 @@ const validateCreateTodo = (obj) => {
   });
   return schema.validate(obj);
 };
+const validateUpdatedTodo = (obj) => {
+  const schema = joi.object({
+    baslik: joi.string().max(255),
+    icerik: joi.string().max(255),
+    note: joi.string().max(255),
+    yapildi: joi.boolean().default(false),
+  });
+  return schema.validate(obj);
+};
 const createTodo = asyncHandler(async function (req, res) {
   const { error } = validateCreateTodo(req.body);
   let todo = await ModelTodos.findOne({ baslik: req.body.baslik });
@@ -42,8 +51,29 @@ const getSpaceficTodos = asyncHandler(async function (req, res) {
   }
   res.status(200).json(todo);
 });
+
+const upadateTodo = asyncHandler(async function (req, res) {
+  const { error } = validateUpdatedTodo(req.body);
+  if (error) {
+    res.status(400).json({ msg: error.details[0].message });
+  }
+  const todo = await ModelTodos.findByIdAndUpdate(
+    req.params.id,
+    {
+      $set: {
+        baslik: req.body.baslik,
+        icerik: req.body.icerik,
+        note: req.body.note,
+        yapildi: req.body.yapildi,
+      },
+    },
+    { new: true }
+  );
+  res.status(200).json(todo);
+});
 module.exports = {
   createTodo,
   getTodos,
   getSpaceficTodos,
+  upadateTodo,
 };
