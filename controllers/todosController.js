@@ -30,6 +30,12 @@ const createTodo = asyncHandler(async function (req, res) {
   const result = await todo.save();
   return res.status(201).json(result);
 });
+
+const getTodos = asyncHandler(async function (req, res) {
+  const todos = await ModelTodos.find();
+  res.status(200).json(todos);
+});
 module.exports = {
   createTodo,
+  getTodos,
 };
