@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
 
-const TodosSchema = mongoose.Schema(
+const TodosSchema = new mongoose.Schema(
   {
+    userId: {
+      type: String,
+      required: true,
+    },
     baslik: {
       type: String,
       required: true,
