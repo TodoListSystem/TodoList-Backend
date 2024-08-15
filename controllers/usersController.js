@@ -53,7 +53,7 @@ const login = asyncHandler(async function (req, res) {
   const userEmail = await userModel.findOne({ email: req.body.email });
   const userPassword = await userModel.findOne({ password: req.body.password });
   const user = await userModel.findOne({ email: req.body.email });
-  let todos = await todosModel.find(user._id);
+  let todos = await todosModel.find({ userId: user._id });
   if (error) {
     return res.status(400).json({ msg: error.details[0].message });
   }
@@ -67,6 +67,7 @@ const login = asyncHandler(async function (req, res) {
   const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
     expiresIn: process.env.EXPIRECE,
   });
+  console.log(todos);
   return res.status(200).json({ user, token, todos });
 });
 
