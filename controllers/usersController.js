@@ -67,7 +67,7 @@ const login = asyncHandler(async function (req, res) {
   const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
     expiresIn: process.env.EXPIRECE,
   });
-  return res.status(200).json({ user, token, todos });
+  return res.status(200).json({ user: { user, token } });
 });
 
 const logout = asyncHandler(async function (req, body) {
