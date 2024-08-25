@@ -16,9 +16,6 @@ const validationRegisterUser = (obj) => {
 };
 const validationLoginUser = (obj) => {
   const schema = joi.object({
-    firstName: joi.string().trim(),
-    lastName: joi.string().trim(),
-    userName: joi.string().trim(),
     email: joi.string().trim().pattern(/.+@.+/).min(3).max(50).required(),
     password: joi.string().trim().required(),
   });
@@ -67,11 +64,11 @@ const login = asyncHandler(async function (req, res) {
   const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY, {
     expiresIn: process.env.EXPIRECE,
   });
-  return res.status(200).json({ user: { user, token } });
+  return res.status(200).json({ data: { user, token } });
 });
 
 const logout = asyncHandler(async function (req, body) {
-  return res.status.json({ user: "logout yapildi" });
+  return res.status(200).json({ user: "logout yapildi" });
 });
 module.exports = {
   register,
